@@ -16,13 +16,14 @@ public class GetOrderTest{
     @Before
     public void setUp(){
         user = UserMaker.random();
-        actionSteps = new ActionSteps();
         credentials = new Credentials(user);
     }
     @Test
     @DisplayName("Получение списка заказов пользователя")
     @Description("Проверка успешного получения заказа авторизованного пользователя")
     public void getOrderPositiveTest(){
+        Ingredients ingredients = new Ingredients("61c0c6671d1f82001bdaaa6d");
+        actionSteps = new ActionSteps(ingredients);
         actionSteps.createNewUser(user);
         ValidatableResponse response = actionSteps.loginUser(credentials);
         accessToken = response.extract().path("accessToken").toString();
@@ -33,6 +34,7 @@ public class GetOrderTest{
     @DisplayName("Получение списка заказов без регистрации")
     @Description("Проверка получения ошибки 401 при получении заказа неавторизованного пользователя")
     public void getOrderWithoutUserTest(){
+        actionSteps = new ActionSteps();
         ValidatableResponse response = actionSteps.getNotAuthorizedUserOrders();
         ValidationUserSteps.createOrderWithoutUser(response);
     }

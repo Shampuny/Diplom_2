@@ -8,12 +8,18 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 
+
 public class ActionSteps extends RequestSpecifications{
     private static final String CREATE_NEW_USER_ENDPOINT = "/api/auth/register";
     private static final String LOGIN_USER_ENDPOINT = "/api/auth/login";
     private static final String UPDATE_OR_DELETE_USER_ENDPOINT = "/api/auth/user";
     private static final String CREATE_ORDER_ENDPOINT = "/api/orders";
     private static final String GET_ORDER_ENDPOINT = "/api/orders";
+    private Ingredients ingredients;
+    public ActionSteps(Ingredients ingredients){
+        this.ingredients = ingredients;
+    }
+    public ActionSteps(){}
 
     @Step("Регистрация нового пользователя")
     public ValidatableResponse createNewUser(User user){
@@ -81,7 +87,7 @@ public class ActionSteps extends RequestSpecifications{
                 .spec(getSpec())
                 .header("Authorization", accessToken)
                 .when()
-                .body("{\n\"ingredients\": [\"61c0c5a71d1f82001bdaaa6d\",\"61c0c5a71d1f82001bdaaa6f\",\"61c0c5a71d1f82001bdaaa70\"]\n}")
+                .body(ingredients)
                 .post(CREATE_ORDER_ENDPOINT)
                 .then()
                 .log().all();
@@ -93,7 +99,7 @@ public class ActionSteps extends RequestSpecifications{
                 .spec(getSpec())
                 .header("Authorization", accessToken)
                 .when()
-                .body("{\n\"ingredients\": [\"61c0c6671d1f82001bdaaa6d\",\"61c0c6644d1f82001bdaaa6d\",\"61c0c6671d1f33001bdaaa6d\"]\n}")
+                .body(ingredients)
                 .post(CREATE_ORDER_ENDPOINT)
                 .then()
                 .log().all()
@@ -123,7 +129,7 @@ public class ActionSteps extends RequestSpecifications{
         return given()
                 .spec(getSpec())
                 .when()
-                .body("{\n\"ingredients\": [\"61c0c5a71d1f82001bdaaa79\",\"61c0c5a71d1f82001bdaaa77\",\"61c0c5a71d1f82001bdaaa71\"]\n}")
+                .body(ingredients)
                 .post(CREATE_ORDER_ENDPOINT)
                 .then()
                 .log().all()
