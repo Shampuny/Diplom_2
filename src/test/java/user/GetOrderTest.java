@@ -1,5 +1,7 @@
 package user;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
@@ -7,23 +9,27 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+
 public class GetOrderTest{
     private User user;
     private ActionSteps actionSteps;
     private String accessToken;
     private Credentials credentials;
+    Gson gson;
 
     @Before
     public void setUp(){
         user = UserMaker.random();
         credentials = new Credentials(user);
+        gson = new GsonBuilder().setPrettyPrinting().create();
     }
     @Test
     @DisplayName("Получение списка заказов пользователя")
     @Description("Проверка успешного получения заказа авторизованного пользователя")
     public void getOrderPositiveTest(){
-        Ingredients ingredients = new Ingredients("61c0c6671d1f82001bdaaa6d");
-        actionSteps = new ActionSteps(ingredients);
+        Ingredients ingredients = new Ingredients(IngredientsData.getIdsIngredients());
+        String json = gson.toJson(ingredients);
+        actionSteps = new ActionSteps(json);
         actionSteps.createNewUser(user);
         ValidatableResponse response = actionSteps.loginUser(credentials);
         accessToken = response.extract().path("accessToken").toString();

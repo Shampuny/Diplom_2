@@ -15,9 +15,9 @@ public class ActionSteps extends RequestSpecifications{
     private static final String UPDATE_OR_DELETE_USER_ENDPOINT = "/api/auth/user";
     private static final String CREATE_ORDER_ENDPOINT = "/api/orders";
     private static final String GET_ORDER_ENDPOINT = "/api/orders";
-    private Ingredients ingredients;
-    public ActionSteps(Ingredients ingredients){
-        this.ingredients = ingredients;
+    private String json;
+    public ActionSteps(String json){
+        this.json = json;
     }
     public ActionSteps(){}
 
@@ -87,7 +87,7 @@ public class ActionSteps extends RequestSpecifications{
                 .spec(getSpec())
                 .header("Authorization", accessToken)
                 .when()
-                .body(ingredients)
+                .body(json)
                 .post(CREATE_ORDER_ENDPOINT)
                 .then()
                 .log().all();
@@ -99,7 +99,7 @@ public class ActionSteps extends RequestSpecifications{
                 .spec(getSpec())
                 .header("Authorization", accessToken)
                 .when()
-                .body(ingredients)
+                .body(json)
                 .post(CREATE_ORDER_ENDPOINT)
                 .then()
                 .log().all()
@@ -129,7 +129,7 @@ public class ActionSteps extends RequestSpecifications{
         return given()
                 .spec(getSpec())
                 .when()
-                .body(ingredients)
+                .body(json)
                 .post(CREATE_ORDER_ENDPOINT)
                 .then()
                 .log().all()
